@@ -1,0 +1,25 @@
+# Medical Education App - Python Dependencies
+
+# AI and API
+openai>=1.0.0
+
+# Video Generation
+Pillow>=10.0.0
+moviepy>=2.0.0
+gtts>=2.5.0
+edge-tts>=6.1.0
+imageio>=2.30.0
+imageio-ffmpeg>=0.6.0
+
+# YouTube Upload
+google-auth>=2.20.0
+google-auth-oauthlib>=1.0.0
+google-auth-httplib2>=0.1.0
+google-api-python-client>=2.90.0
+
+# HTTP Requests
+requests>=2.31.0
+
+# Optional: Web API
+flask>=3.0.0
+gunicorn>=21.0.0
