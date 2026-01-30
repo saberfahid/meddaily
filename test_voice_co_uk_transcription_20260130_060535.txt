@@ -1,1 +1,0 @@
-[00:00.0 - 00:07.5] Hello, this is a test of the medical education application voice. Is this a male or female voice?
