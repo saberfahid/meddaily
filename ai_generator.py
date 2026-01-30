@@ -100,6 +100,26 @@ Return ONLY the JSON object."""
             print(f"Error: {e}")
             raise
 
+    def format_for_youtube_description(self, content: dict, topic: str, subtopic: str) -> str:
+        """Format content for YouTube video description"""
+        desc = f"📚 {topic}: {subtopic}\n\n"
+        desc += f"📌 Clinical Case:\n{content['case_text']}\n\n"
+        desc += "❓ Test Your Knowledge:\n"
+        
+        all_mcqs = content.get('case_based_mcqs', []) + content.get('independent_mcqs', [])
+        for i, mcq in enumerate(all_mcqs[:3], 1):
+            desc += f"{i}. {mcq['question']}\n"
+        
+        desc += f"\n🧠 Mnemonic: {content['mnemonic']}\n\n"
+        desc += "✅ Answers in comments!\n\n"
+        desc += "━━━━━━━━━━━━━━━━━━━━━━\n"
+        desc += "🔔 Subscribe for daily medical cases!\n"
+        desc += "👍 Like if you learned something new!\n"
+        desc += "💬 Comment your answer below!\n"
+        
+        return desc
+
+
 # Test function
 if __name__ == "__main__":
     generator = MedicalContentGenerator()
