@@ -206,13 +206,16 @@ class MedicalEducationOrchestrator:
                     # Combine all MCQs
                     all_mcqs = content['case_based_mcqs'] + content['independent_mcqs']
                     
+                    # Ensure we use the correct YouTube URL if available
+                    yt_url = youtube_result['video_url'] if youtube_result else None
+                    
                     telegram_message_id = self.telegram_poster.post_educational_content(
                         topic=topic_name,
                         subtopic=subtopic_name,
                         case_text=content['case_text'],
                         mcqs=all_mcqs,
                         mnemonic=content['mnemonic'],
-                        youtube_url=youtube_result['video_url'] if youtube_result else None
+                        youtube_url=yt_url
                     )
                     
                     if telegram_message_id:

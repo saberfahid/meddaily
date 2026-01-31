@@ -46,7 +46,7 @@ class MedicalDatabase:
                 last_used_at TIMESTAMP,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (subject_id) REFERENCES subjects(id),
-                UNIQUE(subject_id, topic_name, subtopic_name, cycle_number)
+                UNIQUE(subject_id, topic_name, subtopic_name)
             )
         """)
         
@@ -231,12 +231,12 @@ class MedicalDatabase:
             """, (subject_id,))
             original_topics = cursor.fetchall()
             
-            # Create new cycle entries
-            for topic_name, subtopic_name in original_topics:
-                cursor.execute("""
-                    INSERT INTO topics (subject_id, topic_name, subtopic_name, cycle_number, used)
-                    VALUES (?, ?, ?, ?, 0)
-                """, (subject_id, topic_name, subtopic_name, new_cycle))
+            # Reset all topics for this subject to unused and increment cycle
+            cursor.execute("""
+                UPDATE topics 
+                SET used = 0, cycle_number = ?
+                WHERE subject_id = ?
+            """, (new_cycle, subject_id))
             
             conn.commit()
             conn.close()

@@ -5,6 +5,8 @@ Handles automatic posting of educational content to Telegram
 
 import os
 import requests
+from dotenv import load_dotenv
+load_dotenv()
 from typing import Optional, Dict, Any
 
 
@@ -105,19 +107,24 @@ class TelegramPoster:
                                     youtube_url: str = None) -> str:
         """Format educational content for Telegram"""
         
+        # Helper to escape HTML special characters
+        def escape_html(text):
+            if not text: return ""
+            return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
         # Use HTML formatting for better appearance
-        message = f"🩺 <b>{topic}: {subtopic}</b>\n\n"
+        message = f"🩺 <b>{escape_html(topic)}: {escape_html(subtopic)}</b>\n\n"
         
-        message += f"📌 <b>Case:</b>\n{case_text}\n\n"
+        message += f"📌 <b>Case:</b>\n{escape_html(case_text)}\n\n"
         
         message += "❓ <b>MCQs:</b>\n"
         for i, mcq in enumerate(mcqs[:5], 1):  # Limit to 5 questions
             question = mcq['question']
             if len(question) > 100:
                 question = question[:97] + "..."
-            message += f"{i}) {question}\n"
+            message += f"{i}) {escape_html(question)}\n"
         
-        message += f"\n🧠 <b>Mnemonic:</b>\n{mnemonic}\n"
+        message += f"\n🧠 <b>Mnemonic:</b>\n{escape_html(mnemonic)}\n"
         
         if youtube_url:
             message += f"\n▶ <a href='{youtube_url}'>Watch Video</a>"
