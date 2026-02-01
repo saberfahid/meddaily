@@ -108,14 +108,9 @@ class PremiumVideoGenerator:
         draw = ImageDraw.Draw(img)
         
         font_paths = [
-            # Windows fonts
-            "C:/Windows/Fonts/arial.ttf",
-            "C:/Windows/Fonts/segoeui.ttf",
-            "C:/Windows/Fonts/calibri.ttf",
-            "C:/Windows/Fonts/verdana.ttf",
-            # Linux fonts
             "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-            "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf"
+            "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
+            "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
         ]
         font_path = next((p for p in font_paths if os.path.exists(p)), None)
         

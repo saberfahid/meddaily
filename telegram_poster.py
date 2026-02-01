@@ -24,10 +24,15 @@ class TelegramPoster:
         self.bot_token = bot_token or os.getenv('TELEGRAM_BOT_TOKEN')
         self.channel_id = channel_id or os.getenv('TELEGRAM_CHANNEL_ID')
         
-        if not self.bot_token:
-            raise ValueError("Telegram bot token not provided")
-        if not self.channel_id:
-            raise ValueError("Telegram channel ID not provided")
+        if not self.bot_token or self.bot_token == "your_telegram_bot_token":
+            print("⚠️  Telegram bot token not configured.")
+            self.bot_token = None
+        if not self.channel_id or self.channel_id == "your_telegram_channel_id":
+            print("⚠️  Telegram channel ID not configured.")
+            self.channel_id = None
+        
+        if not self.bot_token or not self.channel_id:
+            return
         
         self.api_url = f"https://api.telegram.org/bot{self.bot_token}"
     
@@ -44,6 +49,9 @@ class TelegramPoster:
         Returns:
             Response dict if successful, None otherwise
         """
+        if not self.bot_token or not self.channel_id:
+            print("⚠️  Telegram not configured. Cannot send message.")
+            return None
         
         url = f"{self.api_url}/sendMessage"
         

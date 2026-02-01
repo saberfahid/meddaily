@@ -8,13 +8,19 @@ from openai import OpenAI
 
 class MedicalContentGenerator:
     def __init__(self, model: str = "mistral-small-latest"):
-        # Use environment variable or fallback to hardcoded key
-        api_key = os.getenv("MISTRAL_API_KEY", "l3pdbDohuqIBhQCPJWw7BkZ9QUtFRsWJ")
-        self.client = OpenAI(
-            api_key=api_key,
-            base_url="https://api.mistral.ai/v1"
-        )
-        self.model = model
+        # Use Mistral API from environment variable
+        api_key = os.getenv("MISTRAL_API_KEY")
+        if not api_key:
+            # Fallback for local testing or Manus environment
+            api_key = os.getenv("OPENAI_API_KEY")
+            self.client = OpenAI(api_key=api_key)
+            self.model = "gpt-4.1-mini"
+        else:
+            self.client = OpenAI(
+                api_key=api_key,
+                base_url="https://api.mistral.ai/v1"
+            )
+            self.model = model
     
     def generate_educational_content(self, topic: str, subtopic: str) -> dict:
         prompt = f"""Generate medical educational content for:

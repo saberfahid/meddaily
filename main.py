@@ -38,7 +38,11 @@ from telegram_poster import TelegramPoster
 class MedicalEducationOrchestrator:
     """Main orchestrator for automated medical education content pipeline"""
     
-    def __init__(self, db_path: str = "medical_education.db"):
+    def __init__(self, db_path: str = None):
+        if db_path is None:
+            # Use absolute path to ensure consistency in different environments
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+            db_path = os.path.join(base_dir, "medical_education.db")
         """Initialize orchestrator with all components"""
         
         print("=" * 60)

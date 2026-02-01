@@ -243,7 +243,7 @@ class YouTubeUploaderEnv:
                 client_secret = os.getenv('YOUTUBE_CLIENT_SECRET')
                 refresh_token = os.getenv('YOUTUBE_REFRESH_TOKEN')
                 
-                if all([client_id, client_secret, refresh_token]):
+                if all([client_id, client_secret, refresh_token]) and client_id != "your_youtube_client_id":
                     creds = Credentials(
                         token=None,
                         refresh_token=refresh_token,
@@ -253,13 +253,18 @@ class YouTubeUploaderEnv:
                     )
                     creds.refresh(Request())
                 else:
-                    raise ValueError("Missing YouTube credentials (pickle or env vars)")
+                    print("⚠️  YouTube credentials not configured. Skipping YouTube initialization.")
+                    self.youtube = None
+                    return
         
         self.youtube = build('youtube', 'v3', credentials=creds)
     
     def upload_short(self, video_path: str, topic: str, subtopic: str,
                      description: str) -> Optional[Dict[str, str]]:
         """Upload YouTube Short (same interface as YouTubeUploader)"""
+        if not self.youtube:
+            print("⚠️  YouTube not configured. Cannot upload video.")
+            return None
         
         title = f"🩺 {topic}: {subtopic}"
         full_description = description + "\n\n#Medical #USMLE #PLAB #Shorts #MedicalEducation #MedicalStudent"
